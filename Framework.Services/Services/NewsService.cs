@@ -69,7 +69,7 @@ public class NewsService
 
     public async Task<List<string>> GetAllCategories()
     {
-        return await _newsRepository.GetAllCategories(); // ID'ye göre haber detaylarını döndürür.
+        return await _newsRepository.GetAllCategories(); // Tüm kategorileri getirir.
     }
 }
 
