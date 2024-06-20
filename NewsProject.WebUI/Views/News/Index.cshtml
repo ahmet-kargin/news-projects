@@ -1,0 +1,80 @@
+﻿@using PagedList.Core;
+@model NewsProject.Models.NewsViewModel
+
+<div class="container">
+    <h1 class="mt-4 mb-4">Haberler</h1>
+    <!-- Filtreleme Formu -->
+    <form method="get" asp-controller="News" asp-action="Index">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="category" class="form-label">Kategori:</label>
+                <!-- Kategori seçenekleri döngüsü -->
+                <select id="category" name="category" class="form-select">
+                    <option value="">Tümü</option>
+                    @foreach (var category in Model.Category)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="keyword" class="form-label">Anahtar Kelime:</label>
+                <input id="keyword" name="keyword" type="text" value="@Model.Keyword" class="form-control" />
+            </div>
+            <div class="col-md-3 align-self-end">
+                <button type="submit" class="btn btn-primary">Filtrele</button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Haberleri Listeleme -->
+    <div class="row mt-4">
+        @foreach (var news in Model.News)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="@news.ImageUrl" alt="@news.Title" class="card-img-top" style="width: 100%; height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">@news.Title</h5>
+                        <p class="card-text">@news.ShortText</p>
+                        <p class="card-text"><small class="text-muted">@news.PublishDate</small></p>
+                        <a asp-action="Details" asp-controller="News" asp-route-id="@news.ItemId">Devamını Oku</a>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Sayfalama -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <p>Sayfa @(Model.PageNumber) / @(Math.Ceiling((double)Model.TotalNewsCount / Model.PageSize))</p>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <!-- Önceki sayfa -->
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)">Önceki</a>
+                        </li>
+                    }
+                    <!-- Sayfa numaraları -->
+                    @for (var i = 1; i <= Math.Ceiling((double)Model.TotalNewsCount / Model.PageSize); i++)
+                    {
+                        <li class="page-item @(i == Model.PageNumber ? "active" : "")">
+                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+                        </li>
+                    }
+                    <!-- Sonraki sayfa -->
+                    @if (Model.PageNumber < Math.Ceiling((double)Model.TotalNewsCount / Model.PageSize))
+                    {
+                        <li class="page-item">
+                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)">Sonraki</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

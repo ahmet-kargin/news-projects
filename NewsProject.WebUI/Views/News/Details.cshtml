@@ -1,0 +1,19 @@
+﻿@model NewsProject.Models.NewsDetailViewModel
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="mb-3">@Model.Title</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <img src="@Model.ImageUrl" alt="@Model.Title" class="img-fluid" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <p><strong>Publish Date:</strong> @Model.PublishDate</p>
+            <p>@Html.Raw(Model.BodyText)</p>
+            <a href="@Model.FullPath" target="_blank" class="btn btn-primary">Orijinal Kaynakta Oku</a>
+        </div>
+    </div>
+</div>
