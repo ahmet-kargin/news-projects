@@ -1,5 +1,8 @@
 ﻿@using PagedList.Core;
 @model NewsProject.Models.NewsViewModel
+@{
+    var activeCategory = (string?)ViewBag.ActiveCategory;
+}
 
 <div class="container">
     <h1 class="mt-4 mb-4">Haberler</h1>
@@ -13,7 +16,14 @@
                     <option value="">Tümü</option>
                     @foreach (var category in Model.Category)
                     {
-                        <option value="@category">@category</option>
+                        if (!string.IsNullOrEmpty(activeCategory) && activeCategory == category)
+                        {
+                            <option value="@category" selected="selected">@category</option>
+                        }
+                        else
+                        {
+                            <option value="@category">@category</option>
+                        }
                     }
                 </select>
             </div>

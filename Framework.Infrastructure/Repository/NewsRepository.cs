@@ -80,4 +80,11 @@ public class NewsRepository : INewsRepository
 
         return null; // ID ile eşleşen haber detayı bulunamazsa, null döndürülür.
     }
+
+    public async Task<List<string>> GetAllCategories()
+    {
+        var datas = await GetAllAsync();
+
+        return datas.Select(x => x.Category).Distinct().ToList();
+    }
 }

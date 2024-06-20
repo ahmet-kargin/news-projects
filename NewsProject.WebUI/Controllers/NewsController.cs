@@ -20,6 +20,7 @@ public class NewsController : Controller
     {
         int pageSize = 5; // Sayfa başına gösterilecek haber sayısı.
 
+
         // Verilen filtrelerle haberleri alır.
         var news = await _newsService.GetNewsAsync(pageNumber, pageSize, category, keyword);
 
@@ -27,7 +28,7 @@ public class NewsController : Controller
         var totalNewsCount = await _newsService.GetTotalCountAsync(category, keyword);
 
         // Alınan haberlerden farklı kategorileri alır.
-        var distinctCategories = news.Select(n => n.Category).Distinct().ToList();
+        var categories = await _newsService.GetAllCategories();
 
         // NewsViewModel oluşturulur ve gerekli veriler atanır.
         var model = new NewsViewModel
@@ -36,10 +37,12 @@ public class NewsController : Controller
             PageNumber = pageNumber,
             PageSize = pageSize,
             TotalNewsCount = totalNewsCount,
-            Category = distinctCategories,
+            Category = categories,
             Keyword = keyword,
             SelectedCategory = category // Seçilen kategori değişkeni atanır.
         };
+
+        ViewBag.ActiveCategory = category;
 
         return View(model); // Model ile birlikte Index view'ına yönlendirme yapılır.
     }

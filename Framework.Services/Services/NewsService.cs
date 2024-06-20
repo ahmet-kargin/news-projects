@@ -3,6 +3,7 @@ using Framework.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -64,6 +65,11 @@ public class NewsService
     public async Task<NewsDetail> GetNewsDetailByIdAsync(string id)
     {
         return await _newsRepository.GetByIdAsync(id); // ID'ye göre haber detaylarını döndürür.
+    }
+
+    public async Task<List<string>> GetAllCategories()
+    {
+        return await _newsRepository.GetAllCategories(); // ID'ye göre haber detaylarını döndürür.
     }
 }
 
