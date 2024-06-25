@@ -1,6 +1,7 @@
 ﻿using Framework.Application.Interfaces;
 using Framework.Domain.Entities;
 using Framework.Infrastructure.Models;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Framework.Infrastructure.Repository;
@@ -9,19 +10,20 @@ namespace Framework.Infrastructure.Repository;
 public class NewsRepository : INewsRepository
 {
     private readonly HttpClient _httpClient; // HttpClient nesnesi kullanarak haberleri alacağız.
-    private readonly string _newsJsonUrl = "https://www.turkmedya.com.tr/anasayfa.json"; // Ana sayfa verilerinin JSON URL'si.
-    private readonly string _newsDetailJsonUrl = "https://www.turkmedya.com.tr/detay.json"; // Haber detay verilerinin JSON URL'si.
+    private readonly NewsApiUrls _newsApiUrls; // Modelden appsettings.json daki json url leri alır
+    
 
     // Constructor, HttpClient nesnesini enjekte eder.
-    public NewsRepository(HttpClient httpClient)
+    public NewsRepository(HttpClient httpClient,IOptions<NewsApiUrls>  newsApiUrls)
     {
         _httpClient = httpClient;
+        _newsApiUrls = newsApiUrls.Value;
     }
 
     // Tüm haberleri almak için bu metot kullanılır.
     public async Task<IEnumerable<News>> GetAllAsync()
     {
-        var response = await _httpClient.GetAsync(_newsJsonUrl); // JSON verilerini almak için HTTP GET isteği yapılır.
+        var response = await _httpClient.GetAsync(_newsApiUrls.NewsJsonUrl); // JSON verilerini almak için HTTP GET isteği yapılır.
         response.EnsureSuccessStatusCode(); // HTTP isteği başarılı ise devam edilir.
         var jsonString = await response.Content.ReadAsStringAsync(); // JSON verileri string formatına dönüştürülür.
 
@@ -55,7 +57,7 @@ public class NewsRepository : INewsRepository
     // Belirli bir haberin detaylarını almak için bu metot kullanılır.
     public async Task<NewsDetail> GetByIdAsync(string id)
     {
-        var response = await _httpClient.GetAsync(_newsDetailJsonUrl); // JSON verilerini almak için HTTP GET isteği yapılır.
+        var response = await _httpClient.GetAsync(_newsApiUrls.NewsDetailJsonUrl); // JSON verilerini almak için HTTP GET isteği yapılır.
         response.EnsureSuccessStatusCode(); // HTTP isteği başarılı ise devam edilir.
         var jsonString = await response.Content.ReadAsStringAsync(); // JSON verileri string formatına dönüştürülür.
 

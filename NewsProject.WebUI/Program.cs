@@ -1,11 +1,14 @@
 using Framework.Application.Interfaces;
+using Framework.Infrastructure.Models;
 using Framework.Infrastructure.Repository;
 using Framework.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 builder.Services.AddControllersWithViews();
+builder.Services.Configure<NewsApiUrls>(builder.Configuration.GetSection("NewsApiUrls"));
 
 // Dependency Injection registration
 builder.Services.AddHttpClient(); // HttpClient'i ekleyin
