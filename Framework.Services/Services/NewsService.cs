@@ -1,11 +1,6 @@
 ﻿using Framework.Application.Interfaces;
 using Framework.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using PagedList.Core;
 
 namespace Framework.Services.Services;
 
@@ -22,9 +17,9 @@ public class NewsService
     }
 
     // Verilen filtrelerle haberlerin bir sayfa boyutunda bir kısmını almak için kullanılır.
-    public async Task<IEnumerable<News>> GetNewsAsync(int pageNumber, int pageSize, string category = null, string keyword = null)
+    public async Task<IPagedList<News>> GetNewsAsync(int pageNumber, int pageSize, string category = null, string keyword = null)
     {
-        var newsList = await _newsRepository.GetAllAsync(); // Tüm haberleri alır.
+        var newsList = (await _newsRepository.GetAllAsync()).AsQueryable(); // Tüm haberleri alır.
 
         // Kategori veya anahtar kelimeye göre haberleri filtreler.
         if (newsList != null)
@@ -39,8 +34,8 @@ public class NewsService
             }
         }
 
-        // Sayfalama yaparak sadece belirli bir sayfa boyutundaki haberleri döndürür.
-        return newsList.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+        // PagedList ile sayfalama yaparak belirli bir sayfa boyutundaki haberleri döndürür.
+        return newsList.ToPagedList(pageNumber, pageSize);
     }
 
     // Verilen filtrelerle toplam haber sayısını almak için kullanılır.

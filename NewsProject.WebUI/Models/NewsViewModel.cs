@@ -1,10 +1,11 @@
 ﻿using Framework.Domain.Entities;
+using PagedList.Core;
 
 namespace NewsProject.Models;
 
 public class NewsViewModel
 {
-    public IEnumerable<News> News { get; set; }
+    public IPagedList<News> News { get; set; }
     public int PageNumber { get; set; }
     public int PageSize { get; set; }
     public int TotalNewsCount { get; set; }
