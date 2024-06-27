@@ -66,23 +66,51 @@
                     @if (Model.PageNumber > 1)
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber - 1)">Önceki</a>
+                            @{
+                                var routeValues = new Dictionary<string, string>
+                        {
+                        { "pageNumber", (Model.PageNumber - 1).ToString() },
+                        { "category", activeCategory ?? "" },
+                        { "keyword", Model.Keyword ?? "" }
+                        };
+                            }
+                            <!-- asp-all-route-data ile filtrelerin sayfa değişikliklerinde korunmasını sağlamak için kullanılır-->
+                            <a class="page-link" asp-action="Index" asp-all-route-data="routeValues">Önceki</a>
                         </li>
                     }
+
                     <!-- Sayfa numaraları -->
                     @for (var i = 1; i <= Math.Ceiling((double)Model.TotalNewsCount / Model.PageSize); i++)
                     {
                         <li class="page-item @(i == Model.PageNumber ? "active" : "")">
-                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@i">@i</a>
+                            @{
+                                var routeValues = new Dictionary<string, string>
+                        {
+                        { "pageNumber", i.ToString() },
+                        { "category", activeCategory ?? "" },
+                        { "keyword", Model.Keyword ?? "" }
+                        };
+                            }
+                            <a class="page-link" asp-action="Index" asp-all-route-data="routeValues">@i</a>
                         </li>
                     }
+
                     <!-- Sonraki sayfa -->
                     @if (Model.PageNumber < Math.Ceiling((double)Model.TotalNewsCount / Model.PageSize))
                     {
                         <li class="page-item">
-                            <a class="page-link" asp-action="Index" asp-route-pageNumber="@(Model.PageNumber + 1)">Sonraki</a>
+                            @{
+                                var routeValues = new Dictionary<string, string>
+                        {
+                        { "pageNumber", (Model.PageNumber + 1).ToString() },
+                        { "category", activeCategory ?? "" },
+                        { "keyword", Model.Keyword ?? "" }
+                        };
+                            }
+                            <a class="page-link" asp-action="Index" asp-all-route-data="routeValues">Sonraki</a>
                         </li>
                     }
+
                 </ul>
             </nav>
         </div>
