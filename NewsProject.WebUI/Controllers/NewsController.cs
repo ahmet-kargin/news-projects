@@ -38,8 +38,7 @@ public class NewsController : Controller
             PageSize = pageSize,
             TotalNewsCount = totalNewsCount,
             Category = categories,
-            Keyword = keyword,
-            SelectedCategory = category // Seçilen kategori değişkeni atanır.
+            Keyword = keyword
         };
 
         ViewBag.ActiveCategory = category;

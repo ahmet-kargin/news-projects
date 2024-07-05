@@ -11,5 +11,4 @@ public class NewsViewModel
     public int TotalNewsCount { get; set; }
     public List<string> Category { get; set; }
     public string Keyword { get; set; }
-    public string SelectedCategory { get; set; }
 }
